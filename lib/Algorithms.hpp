@@ -230,22 +230,107 @@ int countOccurrence(T arr[], int sizeArr, const T &value, const Comp &cmp = Comp
 }
 
 /* --- CÁC THUẬT TOÁN SẮP XẾP --- */
-template <typename T, typename Comp = std::less<T>>
-void bubbleSort(T arr[], int n, Comp cmp = Comp());
+
+template <typename T>
+void mySwap(T &a, T &b)
+{
+    T temp = a;
+    a = b;
+    b = temp;
+}
+
+/* Selection sort:
+- Vietnamese: Sắp xếp chọn.
+- Range: [left, right].
+- Time complexity: O(n^2) (best case), O(n^2) (worst case).
+- Space complexity: O(1) (worst case).
+- Stability: No.
+- In-place: Yes. */
 
 template <typename T, typename Comp = std::less<T>>
-void selectionSort(T arr[], int n, Comp cmp = Comp());
+void selectionSort(T arr[], int left, int right, const Comp &cmp = Comp())
+{
+    for (int i = left; i <= right; i++)
+    {
+        int selected = i;
+        for (int j = i + 1; j <= right; j++)
+        {
+            if (cmp(arr[j], arr[selected]))
+                selected = j;
+        }
+        if (selected != i)
+            mySwap(arr[i], arr[selected]);
+    }
+}
 
 template <typename T, typename Comp = std::less<T>>
-void insertionSort(T arr[], int n, Comp cmp = Comp());
+void selectionSort(T arr[], int sizeArr, const Comp &cmp = Comp())
+{
+    selectionSort(arr, 0, sizeArr - 1, cmp);
+}
+
+/* Insertion sort:
+- Vietnamese: Sắp xếp chèn.
+- Range: [left, right].
+- Time complexity: O(n) (best case), O(n^2) (worst case).
+- Space complexity: O(1) (worst case).
+- Stability: Yes.
+- In-place: Yes. */
 
 template <typename T, typename Comp = std::less<T>>
-void heapSort(T arr[], int n, Comp cmp = Comp());
+void insertionSort(T arr[], int left, int right, const Comp &cmp = Comp())
+{
+    for (int i = left + 1; i <= right; i++)
+    {
+        T curr = arr[i];
+        int j = i - 1;
+        while (j >= left && cmp(curr, arr[j]))
+        {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = curr;
+    }
+}
 
 template <typename T, typename Comp = std::less<T>>
-void quickSort(T arr[], int lo, int hi, Comp cmp = Comp());
+void insertionSort(T arr[], int sizeArr, const Comp &cmp = Comp())
+{
+    insertionSort(arr, 0, sizeArr - 1, cmp);
+}
+
+/* Bubble sort:
+- Vietnamese: Sắp xếp nổi bọt.
+- Range: [left, right].
+- Time complexity: O(n) (best case), O(n^2) (worst case).
+- Space complexity: O(1) (worst case).
+- Stability: Yes.
+- In-place: Yes. */
 
 template <typename T, typename Comp = std::less<T>>
-void mergeSort(T arr[], int n, Comp cmp = Comp());
+void bubbleSort(T arr[], int left, int right, const Comp &cmp = Comp())
+{
+    int size = right - left + 1;
+    for (int i = 0; i < size - 1; i++)
+    {
+        bool swapped = false;
+        for (int j = left; j < right - i; j++)
+        {
+            if (cmp(arr[j + 1], arr[j]))
+            {
+                mySwap(arr[j], arr[j + 1]);
+                swapped = true;
+            }
+        }
+        if (!swapped)
+            break;
+    }
+}
+
+template <typename T, typename Comp = std::less<T>>
+void bubbleSort(T arr[], int sizeArr, const Comp &cmp = Comp())
+{
+    bubbleSort(arr, 0, sizeArr - 1, cmp);
+}
 
 #endif // ALGORITHMS_HPP
