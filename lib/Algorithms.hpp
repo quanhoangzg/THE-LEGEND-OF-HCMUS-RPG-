@@ -202,6 +202,33 @@ int upperBound(T arr[], int sizeArr, const T &value, const Comp &cmp = Comp())
     return upperBound(arr, 0, sizeArr - 1, value, cmp);
 }
 
+/* Count_occurrence(value):
+- Vietnamese: Đếm số lần xuất hiện của value trong mảng.
+- Condition: array must be sorted according to comparator
+(mảng được sắp xếp, hay mảng là một dãy đơn điệu theo comparator).
+- Range: [left, right].
+- Time complexity: O(log n).
+- Space complexity: O(1).
+- Return:
++ Number of occurrences of value in array.
++ If value does not exist in array, return 0. */
+
+template <typename T, typename Comp = std::less<T>>
+int countOccurrence(T arr[], int left, int right, const T &value, const Comp &cmp = Comp())
+{
+    int first = binarySearchFirst(arr, left, right, value, cmp);
+    if (first == -1)
+        return 0;
+    int last = binarySearchLast(arr, left, right, value, cmp);
+    return last - first + 1;
+}
+
+template <typename T, typename Comp = std::less<T>>
+int countOccurrence(T arr[], int sizeArr, const T &value, const Comp &cmp = Comp())
+{
+    return countOccurrence(arr, 0, sizeArr - 1, value, cmp);
+}
+
 /* --- CÁC THUẬT TOÁN SẮP XẾP --- */
 template <typename T, typename Comp = std::less<T>>
 void bubbleSort(T arr[], int n, Comp cmp = Comp());
