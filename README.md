@@ -1,2 +1,2 @@
 # THE-LEGEND-OF-HCMUS-RPG-
-THIS IS OUR PROJECT IN DSA CLASS
+This is our DSA mini project: C++ Template Library and Application.
