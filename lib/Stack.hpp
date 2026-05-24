@@ -2,19 +2,75 @@
 #define STACK_HPP
 
 template <typename T>
-struct Stack {
-    T* data = nullptr;
-    int topIndex = -1;
-    int capacity = 0;
+struct StackNode
+{
+    T data;
+    StackNode<T> *next;
+    StackNode(const T &value) : data(value), next(nullptr) {};
 };
 
-// --- Các hàm cốt lõi ---
-template <typename T> void push(Stack<T>& s, const T& item);
-template <typename T> T pop(Stack<T>& s);
-template <typename T> T top(const Stack<T>& s);
-template <typename T> bool empty(const Stack<T>& s);
-template <typename T> int size(const Stack<T>& s);
-template <typename T> void initStack(Stack<T>& s, int cap); // Hàm phụ trợ để cấp phát bộ nhớ
-template <typename T> void clear(Stack<T>& s);
+template <typename T>
+struct Stack
+{
+    StackNode<T> *top;
+    int size;
+};
+
+template <typename T>
+void init(Stack<T> &st)
+{
+    st.top = nullptr;
+    st.size = 0;
+}
+
+template <typename T>
+bool isEmpty(const Stack<T> &st)
+{
+    return st.top == nullptr;
+}
+
+template <typename T>
+int getSize(const Stack<T> &st)
+{
+    return st.size;
+}
+
+template <typename T>
+const T &getTop(const Stack<T> &st)
+{
+    return st.top->data;
+}
+
+template <typename T>
+void push(Stack<T> &st, const T &value)
+{
+    StackNode<T> *p = new StackNode<T>(value);
+    p->next = st.top;
+    st.top = p;
+    st.size++;
+}
+
+template <typename T>
+void pop(Stack<T> &st)
+{
+    if (st.top == nullptr)
+        return;
+    StackNode<T> *temp = st.top;
+    st.top = st.top->next;
+    delete temp;
+    st.size--;
+}
+
+template <typename T>
+void clear(Stack<T> &st)
+{
+    while (st.top != nullptr)
+    {
+        StackNode<T> *temp = st.top;
+        st.top = st.top->next;
+        delete temp;
+    }
+    st.size = 0;
+}
 
 #endif // STACK_HPP
