@@ -333,4 +333,134 @@ void bubbleSort(T arr[], int sizeArr, const Comp &cmp = Comp())
     bubbleSort(arr, 0, sizeArr - 1, cmp);
 }
 
+/* Quick sort:
+- Vietnamese: Sắp xếp nhanh.
+- Range: [left, right].
+- Time complexity: O(n log n) (best case), O(n^2) (worst case).
+- Space complexity: O(log n) (best case), O(n) (worst case).
+- Stability: No.
+- In-place: Yes. */
+
+template <typename T, typename Comp = std::less<T>>
+int partition(T arr[], int left, int right, const Comp &cmp = Comp())
+{
+    int i = left - 1, j = right + 1;
+    T pivot = arr[left];
+    while (true)
+    {
+        do
+        {
+            i++;
+        } while (cmp(arr[i], pivot));
+        do
+        {
+            j--;
+        } while (cmp(pivot, arr[j]));
+        if (i >= j)
+            break;
+        mySwap(arr[i], arr[j]);
+    }
+    return j; // quan trọng.
+}
+
+template <typename T, typename Comp = std::less<T>>
+void quickSort(T arr[], int left, int right, const Comp &cmp = Comp())
+{
+    if (left < right)
+    {
+        int pivot = partition(arr, left, right, cmp);
+        quickSort(arr, left, pivot, cmp);      // chú ý.
+        quickSort(arr, pivot + 1, right, cmp); // chú ý.
+    }
+}
+
+template <typename T, typename Comp = std::less<T>>
+void quickSort(T arr[], int sizeArr, const Comp &cmp = Comp())
+{
+    quickSort(arr, 0, sizeArr - 1, cmp);
+}
+
+/* Heap sort:
+- Vietnamese: Sắp xếp đống.
+- Range: [0, sizeArr - 1].
+- Time complexity: O(n log n) (best case), O(n log n) (worst case).
+- Space complexity: O(1) (worst case).
+- Stability: No.
+- In-place: Yes. */
+
+template <typename T, typename Comp = std::less<T>>
+void heapify(T arr[], int sizeArr, int node, const Comp &cmp = Comp())
+{
+    while (2 * node + 1 < sizeArr)
+    {
+        int best = node, left = 2 * node + 1, right = 2 * node + 2;
+        if (left < sizeArr && cmp(arr[best], arr[left]))
+            best = left;
+        if (right < sizeArr && cmp(arr[best], arr[right]))
+            best = right;
+        if (best == node)
+            break;
+        mySwap(arr[node], arr[best]);
+        node = best;
+    }
+}
+
+template <typename T, typename Comp = std::less<T>>
+void heapSort(T arr[], int sizeArr, const Comp &cmp = Comp())
+{
+    for (int i = sizeArr / 2 - 1; i >= 0; i--)
+        heapify(arr, sizeArr, i, cmp);
+    for (int i = sizeArr - 1; i > 0; i--)
+    {
+        mySwap(arr[0], arr[i]);
+        heapify(arr, i, 0, cmp);
+    }
+}
+
+/* Merge sort:
+- Vietnamese: Sắp xếp trộn.
+- Range: [left, right].
+- Time complexity: O(n log n) (best case), O(n log n) (worst case).
+- Space complexity: O(n) (worst case).
+- Stability: Yes.
+- In-place: No. */
+
+template <typename T, typename Comp = std::less<T>>
+void merge(T arr[], T temp[], int left, int mid, int right, const Comp &cmp = Comp())
+{
+    int i = left, j = mid + 1, k = left;
+    while (i <= mid && j <= right)
+    {
+        if (cmp(arr[j], arr[i]))
+            temp[k++] = arr[j++];
+        else
+            temp[k++] = arr[i++];
+    }
+    while (i <= mid)
+        temp[k++] = arr[i++];
+    while (j <= right)
+        temp[k++] = arr[j++];
+    for (int t = left; t <= right; t++)
+        arr[t] = temp[t];
+}
+
+template <typename T, typename Comp = std::less<T>>
+void mergeSort(T arr[], T temp[], int left, int right, const Comp &cmp = Comp())
+{
+    if (left >= right)
+        return;
+    int mid = left + (right - left) / 2;
+    mergeSort(arr, temp, left, mid, cmp);      // chú ý.
+    mergeSort(arr, temp, mid + 1, right, cmp); // chú ý.
+    merge(arr, temp, left, mid, right, cmp);   // chú ý.
+}
+
+template <typename T, typename Comp = std::less<T>>
+void mergeSort(T arr[], int sizeArr, const Comp &cmp = Comp())
+{
+    T *temp = new T[sizeArr];
+    mergeSort(arr, temp, 0, sizeArr - 1, cmp);
+    delete[] temp;
+}
+
 #endif // ALGORITHMS_HPP
