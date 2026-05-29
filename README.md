@@ -1,2 +1,3 @@
 # THE-LEGEND-OF-HCMUS-RPG-
-This is our DSA mini project: C++ Template Library and Application.
+- This is our DSA mini project: C++ Template Library and Application.
+- Author: Văn Thành Phát and Nguyễn Hoàng Quân.
