@@ -369,8 +369,8 @@ void quickSort(T arr[], int left, int right, const Comp &cmp = Comp())
     if (left < right)
     {
         int pivot = partition(arr, left, right, cmp);
-        quickSort(arr, left, pivot, cmp);      // chú ý.
-        quickSort(arr, pivot + 1, right, cmp); // chú ý.
+        quickSort(arr, left, pivot, cmp);
+        quickSort(arr, pivot + 1, right, cmp);
     }
 }
 
@@ -450,9 +450,9 @@ void mergeSort(T arr[], T temp[], int left, int right, const Comp &cmp = Comp())
     if (left >= right)
         return;
     int mid = left + (right - left) / 2;
-    mergeSort(arr, temp, left, mid, cmp);      // chú ý.
-    mergeSort(arr, temp, mid + 1, right, cmp); // chú ý.
-    merge(arr, temp, left, mid, right, cmp);   // chú ý.
+    mergeSort(arr, temp, left, mid, cmp);
+    mergeSort(arr, temp, mid + 1, right, cmp);
+    merge(arr, temp, left, mid, right, cmp);
 }
 
 template <typename T, typename Comp = std::less<T>>
