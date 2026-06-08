@@ -8,6 +8,7 @@ using namespace std;
 void pauseScreen() {
     std::cout << "\n(Nhan Enter de tiep tuc...)";
     std::cin.get(); 
+    clearScreen();
 }
 
 void clearScreen() {
@@ -35,9 +36,6 @@ int main() {
         cout << "6. Kho Thanh tuu \n";
         cout << "0. Dang xuat (Thoat game)\n";
         cout << "-> Lua chon cua ban: ";
-
-        cin >> choice;
-        cin.ignore();
 
         if (!(cin >> choice)) {
             cin.clear(); 
