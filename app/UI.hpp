@@ -9,6 +9,14 @@ void drawTitle() {
     std::cout << "=========================================\n";
 }
 
+void drawDungeonIndexInterface() {
+    std::cout << "--- CUON SANG DUNGEON INDEX ---\n";
+    std::cout << "1. Tra cuu ma mon hoc (Dungeon)\n";
+    std::cout << "2. Them dungeon index moi\n";
+    std::cout << "0. Quay lai menu chinh\n";
+    std::cout << "-> Lua chon: ";
+}
+
 void drawAttackAnimation() {
     std::cout << ">> [HOAT ANH: KI SI CHEM TIEU DIET BOSS] <<\n";
 }
