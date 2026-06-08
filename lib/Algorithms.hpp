@@ -1,7 +1,7 @@
 #ifndef ALGORITHMS_HPP
 #define ALGORITHMS_HPP
 
-#include <functional> // Chứa std::less<T> mặc định.
+#include <functional>
 
 /* --- CÁC THUẬT TOÁN TÌM KIẾM --- */
 
