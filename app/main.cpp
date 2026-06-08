@@ -2,13 +2,9 @@
 #include "UI.hpp"
 #include <limits>
 #include "DataTypes.hpp"
+#include "GameLogic.hpp"
 #include <cstdlib> 
 using namespace std;
-
-void pauseScreen() {
-    std::cout << "\n(Nhan Enter de tiep tuc...)";
-    std::cin.get(); 
-}
 
 void clearScreen() {
     #ifdef _WIN32
@@ -18,8 +14,18 @@ void clearScreen() {
     #endif
 }
 
+void pauseScreen() {
+    std::cout << "\n(Nhan Enter de tiep tuc...)";
+    std::cin.get(); 
+    clearScreen();
+}
+
+
+
 int main() {
     Player hero = {"QuanTest", 10, 5};
+
+    loadDungeonIndex();
 
     bool isRunning = true;
     int choice;
@@ -36,9 +42,6 @@ int main() {
         cout << "0. Dang xuat (Thoat game)\n";
         cout << "-> Lua chon cua ban: ";
 
-        cin >> choice;
-        cin.ignore();
-
         if (!(cin >> choice)) {
             cin.clear(); 
             cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
@@ -49,12 +52,38 @@ int main() {
 
         clearScreen();
 
-        switch (choice)
-        {
-            case 1:
-                /* code */
-                cout << "TN1\n";
+        switch (choice) {
+            case 1: {
+                bool inIndexMenu = true;
+                int indexChoice;
+                while (inIndexMenu) {
+                    clearScreen();
+                    drawDungeonIndexInterface();
+                    
+                    if (!(cin >> indexChoice)) {
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        indexChoice = -1;
+                    } else {
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    }
+
+                    clearScreen();
+                    if (indexChoice == 1) {
+                        searchDungeonIndex(); // Đổi tên
+                        pauseScreen();
+                    } else if (indexChoice == 2) {
+                        addDungeonToIndex();  // Đổi tên
+                        pauseScreen();
+                    } else if (indexChoice == 0) {
+                        inIndexMenu = false;
+                    } else {
+                        cout << "Lua chon khong hop le!\n";
+                        pauseScreen();
+                    }
+                }
                 break;
+            }
             case 2:
                 /* code */
                 cout << "TN2\n";
@@ -88,6 +117,5 @@ int main() {
             pauseScreen();
         }
     }
-
     return 0;
 }
