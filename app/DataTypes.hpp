@@ -29,6 +29,10 @@ struct Dungeon {
     int playerHP;
     int priority;
     Queue<Boss> bossQueue;
+
+    bool operator<(const Dungeon& other) const {
+        return priority < other.priority; // Môn nào có độ ưu tiên lớn hơn thì lên trước
+    }
 };
 
 // Dữ liệu cho kị sĩ (Main)

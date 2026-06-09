@@ -15,7 +15,7 @@ void mySwap(T &a, T &b)
 template <typename T>
 struct PriorityQueue
 {
-    vector<T> heap;
+   std::vector<T> heap;
 };
 
 template <typename T>
