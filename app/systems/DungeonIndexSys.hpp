@@ -1,11 +1,11 @@
-#ifndef GAMELOGIC_HPP
-#define GAMELOGIC_HPP
+#ifndef DUNGEON_INDEX_SYS_HPP
+#define DUNGEON_INDEX_SYS_HPP
 
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "DataTypes.hpp"
-#include "../lib/HashTable.hpp"
+#include "../DataTypes.hpp"        
+#include "../../lib/HashTable.hpp"
 
 // ==== lOGIC CHO DUNGEON INDEX ====
 
@@ -26,8 +26,8 @@ struct HashString {
     CourseInfo của thư viện DataTypes
 */
 
-HashTable<std::string, CourseInfo> dungeonIndex;
-HashString stringHasher;
+inline HashTable<std::string, CourseInfo> dungeonIndex;
+inline HashString stringHasher;
 
 // Hàm load dữ liệu từ file courses.txt khi mở game
 void loadDungeonIndex() {
@@ -53,6 +53,7 @@ void loadDungeonIndex() {
 
         insert(dungeonIndex, id, info, stringHasher);
     }
+    file.close();
     std::cout<< "[He thong] Da nap thanh cong Dungeon Index tu file!\n";
 }
 

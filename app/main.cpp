@@ -2,7 +2,7 @@
 #include "UI.hpp"
 #include <limits>
 #include "DataTypes.hpp"
-#include "GameLogic.hpp"
+#include "systems/DungeonIndexSys.hpp"
 #include <cstdlib> 
 using namespace std;
 
