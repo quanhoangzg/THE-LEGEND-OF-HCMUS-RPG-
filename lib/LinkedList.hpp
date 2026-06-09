@@ -2,6 +2,7 @@
 #define LINKED_LIST_HPP
 
 #include <iostream>
+#include <functional>
 
 // SLL = Singly Linked List.
 template <typename T>
@@ -9,6 +10,7 @@ struct SLLNode
 {
     T data;
     SLLNode<T> *next;
+    SLLNode() : data(), next(nullptr) {};
     SLLNode(const T &value) : data(value), next(nullptr) {};
 };
 
@@ -195,6 +197,76 @@ void removeAllValues(SinglyLinkedList<T> &list, const T &value)
     }
 }
 
+/* Xóa tất cả các node trùng nhau trong một list đã sắp xếp, giữ lại node đầu tiên. */
+template <typename T>
+void removeDuplicateNodes(SinglyLinkedList<T> &list)
+{
+    if (list.head == nullptr || list.head->next == nullptr)
+        return;
+    SLLNode<T> *curr = list.head;
+    while (curr != nullptr && curr->next != nullptr)
+    {
+        if (curr->data == curr->next->data)
+        {
+            SLLNode<T> *temp = curr->next;
+            curr->next = temp->next;
+            delete temp;
+            list.size--;
+        }
+        else
+            curr = curr->next;
+    }
+    list.tail = curr;
+}
+
+/* Xóa tất cả các node trùng nhau trong một list đã sắp xếp. */
+template <typename T>
+void removeAllDuplicateNodes(SinglyLinkedList<T> &list)
+{
+    if (list.head == nullptr || list.head->next == nullptr)
+        return;
+    SLLNode<T> *dummy = new SLLNode<T>();
+    dummy->next = list.head;
+    SLLNode<T> *prev = dummy, *curr = list.head;
+    while (curr != nullptr)
+    {
+        bool isDuplicated = false;
+        while (curr->next != nullptr && curr->data == curr->next->data)
+        {
+            isDuplicated = true;
+            prev->next = curr->next;
+            delete curr;
+            list.size--;
+            curr = prev->next;
+        }
+
+        if (isDuplicated)
+        {
+            prev->next = curr->next;
+            delete curr;
+            list.size--;
+            curr = prev->next;
+        }
+        else
+        {
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+    list.head = dummy->next;
+    delete dummy;
+
+    if (list.head == nullptr)
+        list.tail = nullptr;
+    else
+    {
+        SLLNode<T> *temp = list.head;
+        while (temp->next != nullptr)
+            temp = temp->next;
+        list.tail = temp;
+    }
+}
+
 template <typename T>
 void clear(SinglyLinkedList<T> &list)
 {
@@ -280,7 +352,7 @@ template <typename T>
 void printBackward(SinglyLinkedList<T> &list)
 {
     reverse(list);
-    printFromHead(list);
+    printForward(list);
     reverse(list);
 }
 
@@ -550,6 +622,48 @@ void swapNodesInPairs(SinglyLinkedList<T> &list)
     while (curr->next != nullptr)
         curr = curr->next;
     list.tail = curr;
+}
+
+template <typename T>
+bool hasCycle(const SinglyLinkedList<T> &list)
+{
+    SLLNode<T> *slow = list.head, *fast = list.head;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast)
+            return true;
+    }
+    return false;
+}
+
+template <typename T>
+SLLNode<T> *findCycleStart(const SinglyLinkedList<T> &list)
+{
+    bool hasCycle = false;
+    SLLNode<T> *slow = list.head, *fast = list.head;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        slow = slow->next;
+        fast = fast->next->next;
+        if (slow == fast)
+        {
+            hasCycle = true;
+            break;
+        }
+    }
+
+    if (!hasCycle)
+        return nullptr;
+
+    SLLNode<T> *p1 = list.head, *p2 = slow;
+    while (p1 != p2)
+    {
+        p1 = p1->next;
+        p2 = p2->next;
+    }
+    return p1;
 }
 
 #endif // LINKED_LIST_HPP
