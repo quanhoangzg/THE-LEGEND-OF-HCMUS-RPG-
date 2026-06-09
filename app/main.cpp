@@ -4,6 +4,7 @@
 #include "DataTypes.hpp"
 #include "systems/DungeonIndexSys.hpp"
 #include <cstdlib> 
+#include "systems/SemesterSys.hpp"     // Logic Hàng đợi
 using namespace std;
 
 void clearScreen() {
@@ -25,22 +26,16 @@ void pauseScreen() {
 int main() {
     Player hero = {"QuanTest", 10, 5};
 
+    // Khởi động hệ thống file
+    clearScreen();
     loadDungeonIndex();
+    pauseScreen();
 
     bool isRunning = true;
     int choice;
 
     while (isRunning) {
-        drawTitle();
-        cout << "Ki si " << hero.name << "| LVL : " << hero.level << " | EXP: " << hero.exp << endl;
-        cout << "1. Tra cuu Monster Index (Thong tin mon hoc)\n";
-        cout << "2. Tao Hoc ky (Them Dungeon & quai vat)\n";
-        cout << "3. Tien vao Dungeon (Giao tranh Boss)\n";
-        cout << "4. Trang bi kien thuc (Skill Tree)\n";
-        cout << "5. Nhat ky Mao hiem (Lich su)\n";
-        cout << "6. Kho Thanh tuu \n";
-        cout << "0. Dang xuat (Thoat game)\n";
-        cout << "-> Lua chon cua ban: ";
+        drawMainMenu(hero, currentSemesterName);
 
         if (!(cin >> choice)) {
             cin.clear(); 
@@ -58,7 +53,7 @@ int main() {
                 int indexChoice;
                 while (inIndexMenu) {
                     clearScreen();
-                    drawDungeonIndexInterface();
+                    drawDungeonIndexMenu();
                     
                     if (!(cin >> indexChoice)) {
                         cin.clear();
@@ -84,10 +79,40 @@ int main() {
                 }
                 break;
             }
-            case 2:
-                /* code */
-                cout << "TN2\n";
+            case 2: {
+                bool inSemesterMenu = true;
+                int semChoice;
+                while (inSemesterMenu) {
+                    clearScreen();
+                    drawSemesterMenu(currentSemesterName); // In giao diện menu Học kỳ
+
+                    if (!(cin >> semChoice)) {
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        semChoice = -1;
+                    } else {
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                    }
+
+                    clearScreen();
+                    if (semChoice == 1) {
+                        selectOrCreateSemester();
+                        pauseScreen();
+                    } else if (semChoice == 2) {
+                        addDungeonAndBosses();
+                        pauseScreen();
+                    } else if (semChoice == 3) {
+                        viewSemesterSchedule();
+                        pauseScreen();
+                    } else if (semChoice == 0) {
+                        inSemesterMenu = false;
+                    } else {
+                        cout << "Lua chon khong hop le!\n";
+                        pauseScreen();
+                    }
+                }
                 break;
+            }
             case 3:
                 /* code */
                 cout << "TN3\n";
