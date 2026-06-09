@@ -149,7 +149,7 @@ void viewSemesterSchedule() {
     int rank = 1;
 
     while (!isEmpty(tempPQ)) {
-        Dungeon d = peek(tempPQ); 
+        Dungeon d = top(tempPQ); 
         
         std::cout << rank << ". Vung dat: " << d.courseID 
                   << " | Uu tien: " << d.priority 
