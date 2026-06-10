@@ -1,6 +1,10 @@
 #ifndef AVL_HPP
 #define AVL_HPP
 
+/* AVL Tree:
+- Duplicate values are ignored.
+- All operations on AVL Tree must use the same comparator. */
+
 #include <iostream>
 #include <functional>
 
@@ -228,6 +232,12 @@ AVLNode<T> *findMin(AVLNode<T> *root)
 }
 
 template <typename T>
+AVLNode<T> *findMin(const AVLTree<T> &tree)
+{
+    return findMin(tree.root);
+}
+
+template <typename T>
 AVLNode<T> *findMax(AVLNode<T> *root)
 {
     if (root == nullptr)
@@ -235,6 +245,12 @@ AVLNode<T> *findMax(AVLNode<T> *root)
     while (root->right != nullptr)
         root = root->right;
     return root;
+}
+
+template <typename T>
+AVLNode<T> *findMax(const AVLTree<T> &tree)
+{
+    return findMax(tree.root);
 }
 
 template <typename T, typename Comp = std::less<T>>
