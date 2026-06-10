@@ -14,8 +14,6 @@ void pauseScreen() {
     clearScreen();
 }
 
-
-
 int main() {
     Player hero = {"QuanTest", 10, 5};
 

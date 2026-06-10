@@ -130,7 +130,7 @@ void addDungeonAndBosses() {
     std::cout << "\n[Thanh cong] Da thiet lap xong Dungeon [" << newDungeon.courseID << "] va dua vao lich trinh!\n";
 }
 
-// Hàm xem lịch trình
+// Hàm xem lịch trình fix
 void viewSemesterSchedule() {
     if (currentSemesterName.empty()) {
         std::cout << "[!] Ban chua chon Hoc ky!\n";
@@ -145,20 +145,23 @@ void viewSemesterSchedule() {
     std::cout << "=== LICH TRINH TIEP CAN DUNGEON (HOC KY: " << currentSemesterName << ") ===\n";
     std::cout << "(Thu tu sap xep tu dong)\n\n";
 
-    PriorityQueue<Dungeon> tempPQ = semesterPQ;
-    int rank = 1;
+    Dungeon tempList[50]; 
+    int count = 0;
 
-    while (!isEmpty(tempPQ)) {
-        Dungeon d = top(tempPQ); 
-        
-        std::cout << rank << ". Vung dat: " << d.courseID 
-                  << " | Uu tien: " << d.priority 
-                  << " | HP Cap: " << d.playerHP << "\n";
+    while (!isEmpty(semesterPQ) && count < 50) {
+        tempList[count] = top(semesterPQ);
+        pop(semesterPQ); 
+        count++;
+    }
+
+    for (int i = 0; i < count; i++) {
+        std::cout << i + 1 << ". Vung dat: " << tempList[i].courseID 
+                  << " | Uu tien: " << tempList[i].priority 
+                  << " | HP Cap: " << tempList[i].playerHP << "\n";
         
         std::cout << "   -> Danh sach quai vat xep hang cho: ";
         
-        // Dùng con trỏ duyệt qua QueueNode để in thông tin
-        QueueNode<Boss>* current = d.bossQueue.front;
+        QueueNode<Boss>* current = tempList[i].bossQueue.front;
         
         if (current == nullptr) {
             std::cout << "Khong co quai vat.";
@@ -170,9 +173,10 @@ void viewSemesterSchedule() {
             }
         }
         std::cout << "\n--------------------------------------------------\n";
-        rank++;
-        pop(tempPQ); 
+    }
+
+    for (int i = 0; i < count; i++) {
+        push(semesterPQ, tempList[i]);
     }
 }
-
 #endif 
