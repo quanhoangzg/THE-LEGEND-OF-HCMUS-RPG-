@@ -16,20 +16,31 @@ void syncSemesterFile() {
     
     if (!file.is_open()) return;
 
-    PriorityQueue<Dungeon> tempPQ = semesterPQ;
-    while (!isEmpty(tempPQ)) {
-        Dungeon d = top(tempPQ);
-        int bossCount = size(d.bossQueue);
-        file << d.courseID << " " << d.priority << " " << d.playerHP << " " << bossCount << "\n";
+    Dungeon tempList[50];
+    int count = 0;
+
+    while (!isEmpty(semesterPQ) && count < 50) {
+        tempList[count] = top(semesterPQ);
+        pop(semesterPQ);
+        count++;
+    }
+
+    for (int i = 0; i < count; i++) {
+        int bossCount = size(tempList[i].bossQueue);
+        file << tempList[i].courseID << " " << tempList[i].priority << " " << tempList[i].playerHP << " " << bossCount << "\n";
         
-        QueueNode<Boss>* current = d.bossQueue.front;
+        QueueNode<Boss>* current = tempList[i].bossQueue.front;
         while (current != nullptr) {
             file << current->data.name << " " << current->data.weight << "\n";
             current = current->next;
         }
-        pop(tempPQ);
     }
     file.close();
+
+    // Nhét trả lại hệ thống
+    for (int i = 0; i < count; i++) {
+        push(semesterPQ, tempList[i]);
+    }
 }
 
 // Flow chiến các dungeons
