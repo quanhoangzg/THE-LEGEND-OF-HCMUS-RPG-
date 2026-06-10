@@ -5,6 +5,14 @@
 #include <string>
 #include "DataTypes.hpp"
 
+inline void clearScreen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
 // Vẽ tiêu đề game
 void drawTitle() {
     std::cout << "\n=========================================\n";
@@ -49,7 +57,17 @@ void drawSemesterMenu(const std::string& currentSemester) {
     std::cout << "-> Lua chon: ";
 }
 
-// Các hoạt ảnh giữ nguyên
+// Các hoạt ảnh In game
+inline void drawStandbyImage(const std::string& heroName, const std::string& bossName) {
+    std::cout << "==================================================\n";
+    std::cout << "               CHIE'N TRU'O`NG AP GIAO              \n";
+    std::cout << "==================================================\n";
+    std::cout << "   [KI' SI~]                               [BOSS] \n";
+    std::cout << "   " << heroName << "          VS          " << bossName << "\n";
+    std::cout << "   (O_O)/_p--------------------------q_(\\O_O)\n";
+    std::cout << "==================================================\n";
+}
+
 void drawAttackAnimation() {
     std::cout << ">>> [HOAT ANH: Kị sĩ 25CTT4 vung kiếm chém Boss!] <<<\n";
 }

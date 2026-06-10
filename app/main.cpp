@@ -2,18 +2,11 @@
 #include "UI.hpp"
 #include <limits>
 #include "DataTypes.hpp"
-#include "systems/DungeonIndexSys.hpp"
+#include "systems/DungeonIndexSys.hpp" // Logic áp dụng HashTable
 #include <cstdlib> 
 #include "systems/SemesterSys.hpp"     // Logic Hàng đợi
+#include "systems/CombatSys.hpp" // Logic dùng Piority Queue
 using namespace std;
-
-void clearScreen() {
-    #ifdef _WIN32
-        system("cls"); // Dành cho Windows
-    #else
-        system("clear"); // Dành cho Linux và macOS
-    #endif
-}
 
 void pauseScreen() {
     std::cout << "\n(Nhan Enter de tiep tuc...)";
@@ -114,8 +107,9 @@ int main() {
                 break;
             }
             case 3:
-                /* code */
-                cout << "TN3\n";
+                clearScreen();
+                enterDungeon(hero);
+                pauseScreen();
                 break;
             case 4:
                 /* code */
