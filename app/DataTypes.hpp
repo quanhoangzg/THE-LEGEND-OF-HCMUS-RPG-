@@ -29,6 +29,7 @@ struct Dungeon {
     int playerHP;
     int priority;
     Queue<Boss> bossQueue;
+    float accumulatedScore = 0.0f;
 
     bool operator<(const Dungeon& other) const {
         return priority < other.priority; // Môn nào có độ ưu tiên lớn hơn thì lên trước
@@ -53,6 +54,20 @@ struct CourseRecord {
     std::string courseID;
     float finalGPA;
     bool isPassed;
+};
+
+// Cấu trúc Thánh tích cho Cây AVL
+struct Relic {
+    std::string courseID;
+    float totalScore;
+    
+    // Nạp chồng toán tử < và > để AVL Tree của A tự biết cách sắp xếp
+    bool operator<(const Relic& other) const {
+        return courseID < other.courseID;
+    }
+    bool operator>(const Relic& other) const {
+        return courseID > other.courseID;
+    }
 };
 
 #endif
