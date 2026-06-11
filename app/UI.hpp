@@ -30,9 +30,8 @@ void drawMainMenu(const Player& hero, const std::string& currentSemester) {
     std::cout << "1. Cuon sach Dungeon Index (Tra cuu / Them mon)\n";
     std::cout << "2. Quan ly Hoc ky\n";
     std::cout << "3. Tien vao Dungeon (Giao tranh Boss)\n";
-    std::cout << "4. Trang bi kien thuc (Skill Tree)\n";
-    std::cout << "5. Nhat ky Mao hiem (Lich su)\n";
-    std::cout << "6. Kho Thanh tuu \n";
+    std::cout << "4. Nhat ky Mao hiem (Lich su)\n";
+    std::cout << "5. Kho Thanh tuu \n";
     std::cout << "0. Dang xuat (Thoat game)\n";
     std::cout << "-> Lua chon cua ban: ";
 }

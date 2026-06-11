@@ -40,15 +40,18 @@ void loadRecords() { // Nạp dữ liệu từ file khi mở game
     }
 }
 
-// Lưu lịch sử combat
 void logCombatHistory(const std::string& courseID, const std::string& bossName, float score) {
     LogEntry entry = {courseID, bossName, score};
     insertAtFront(combatHistory, entry); 
+
+    std::filesystem::create_directories("app/data/records");
 
     std::ofstream file("app/data/records/history.txt", std::ios::app);
     if (file.is_open()) {
         file << courseID << " " << bossName << " " << score << "\n";
         file.close();
+    } else {
+        std::cout << "[Loi] Khong the ghi file history.txt!\n"; // Thêm log để bắt lỗi nếu có
     }
 }
 
@@ -74,10 +77,14 @@ void saveAchievement(const std::string& courseID, float totalScore) {
     Relic r = {courseID, totalScore};
     insert(achievementTree, r); 
     
+    std::filesystem::create_directories("app/data/records");
+
     std::ofstream file("app/data/records/achievements.txt", std::ios::app);
     if (file.is_open()) {
         file << courseID << " " << totalScore << "\n";
         file.close();
+    } else {
+        std::cout << "[Loi] Khong the ghi file achievements.txt!\n";
     }
 }
 

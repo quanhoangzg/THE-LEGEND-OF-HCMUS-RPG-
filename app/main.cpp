@@ -20,6 +20,7 @@ int main() {
     // Khởi động hệ thống file
     clearScreen();
     loadDungeonIndex();
+    loadRecords();
     pauseScreen();
 
     bool isRunning = true;
@@ -109,16 +110,13 @@ int main() {
                 enterDungeon(hero);
                 pauseScreen();
                 break;
-            case 4:
-                /* code */
-                cout << "TN4\n";
-                break;
-            case 5:
+            case 4: // SỐ 4 MỚI: NHẬT KÝ
                 clearScreen();
                 viewCombatHistory();
                 pauseScreen();
                 break;
-            case 6:
+                
+            case 5: // SỐ 5 MỚI: BẢNG VÀNG THÀNH TỰU
                 clearScreen();
                 viewLeaderboard();
                 pauseScreen();
