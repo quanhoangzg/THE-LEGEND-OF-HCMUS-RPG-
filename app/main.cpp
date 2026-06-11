@@ -6,6 +6,7 @@
 #include <cstdlib> 
 #include "systems/SemesterSys.hpp"     // Logic Hàng đợi
 #include "systems/CombatSys.hpp" // Logic dùng Piority Queue
+#include "systems/PlayerSys.hpp"
 using namespace std;
 
 void pauseScreen() {
@@ -15,11 +16,12 @@ void pauseScreen() {
 }
 
 int main() {
-    Player hero = {"QuanTest", 1, 40};
+    Player hero = {"", 1, 0};
 
     // Khởi động hệ thống file
     clearScreen();
     loadDungeonIndex();
+    loadOrCreatePlayer(hero);
     loadRecords();
     pauseScreen();
 

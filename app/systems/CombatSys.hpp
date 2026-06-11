@@ -8,6 +8,7 @@
 #include "SemesterSys.hpp" 
 #include "../UI.hpp"       
 #include "AchievementSys.hpp"
+#include "PlayerSys.hpp"
 
 // Hàm kiểm tra và level up cho kị sĩ
 void checkLevelUp(Player& hero) {
@@ -201,6 +202,9 @@ void enterDungeon(Player& hero) {
     // Logic level up
     checkLevelUp(hero);
 
+    // Lưu dữ hiệu hero mới
+    savePlayer(hero);
+    
     // ghi đè lại file xử lí
     syncSemesterFile();
 }

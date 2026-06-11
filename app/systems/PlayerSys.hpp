@@ -25,26 +25,34 @@ void loadOrCreatePlayer(Player& hero) {
     std::filesystem::create_directories("app/data");
     std::ifstream file("app/data/player.txt");
 
+    bool loadSuccess = false;
+
     if (file.is_open()) {
-        // Nếu file đã tồn tại, tiến hành nạp lại thông tin
-        std::getline(file, hero.name);
-        file >> hero.level >> hero.exp;
+        if (std::getline(file, hero.name) && (file >> hero.level >> hero.exp)) {
+            if (!hero.name.empty()) {
+                loadSuccess = true;
+            }
+        }
         file.close();
-        std::cout << "[He thong] Chao mung Kị si [" << hero.name << "] tro lai dai lo hoc thuat HCMUS!\n";
+    }
+
+    // Nếu nạp file save dc
+    if (loadSuccess) {
+        std::cout << "[He thong] Chao mung Ki si [" << hero.name << "] tro lai dai lo hoc thuat HCMUS!\n";
     } else {
-        // Nếu chưa có file save tạo nhân vật mới
+        // Nếu chưa có file save thì tạo nhân vật mới
         clearScreen();
         std::cout << "==================================================\n";
         std::cout << "       KHOI TAO DIEN MAO - KHAC TEN KI SI         \n";
         std::cout << "==================================================\n";
-        std::cout << "Chao mung Tan binh den với mien dat THE LEGEND OF HCMUS!\n";
+        std::cout << "Chao mung ban den với mien dat THE LEGEND OF HCMUS!\n";
         std::cout << "Truoc khi nhan kiem vao vung dat du, hay ghi ten minh vao Bang phong than.\n\n";
-        std::cout << "-> Nhap ten Kị si cua ban: ";
+        std::cout << "-> Nhap ten Ki si cua ban: ";
         std::getline(std::cin, hero.name);
 
         // Safe check nếu người chơi bấm Enter bỏ trống tên
         if (hero.name.empty()) {
-            hero.name = "KịSiVoDanh";
+            hero.name = "Ki si vo danh";
         }
 
         // Khởi tạo chỉ số tân thủ
@@ -53,7 +61,7 @@ void loadOrCreatePlayer(Player& hero) {
 
         // Lưu file ngay lập tức để tạo slot save
         savePlayer(hero);
-        std::cout << "\n[Thanh cong] Kị si [" << hero.name << "] da nhan an phong (Level 1). San sang len duong!\n";
+        std::cout << "\n[Thanh cong] Ki si [" << hero.name << "] da nhan an phong (Level 1). San sang len duong!\n";
     }
 }
 
