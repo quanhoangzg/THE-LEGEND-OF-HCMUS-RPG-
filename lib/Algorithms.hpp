@@ -231,6 +231,8 @@ int countOccurrence(T arr[], int sizeArr, const T &value, const Comp &cmp = Comp
 
 /* --- CÁC THUẬT TOÁN SẮP XẾP --- */
 
+#ifndef MY_SWAP_DEFINED
+#define MY_SWAP_DEFINED
 template <typename T>
 void mySwap(T &a, T &b)
 {
@@ -238,6 +240,7 @@ void mySwap(T &a, T &b)
     a = b;
     b = temp;
 }
+#endif
 
 /* Selection sort:
 - Vietnamese: Sắp xếp chọn.

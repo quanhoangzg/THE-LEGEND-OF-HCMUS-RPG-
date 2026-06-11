@@ -60,7 +60,7 @@ void drawSemesterMenu(const std::string& currentSemester) {
 // Các hoạt ảnh In game
 inline void drawStandbyImage(const std::string& heroName, const std::string& bossName) {
     std::cout << "==================================================\n";
-    std::cout << "               CHIE'N TRU'O`NG AP GIAO              \n";
+    std::cout << "               CHIEN TRUONG AP GIAO              \n";
     std::cout << "==================================================\n";
     std::cout << "   [KI' SI~]                               [BOSS] \n";
     std::cout << "   " << heroName << "          VS          " << bossName << "\n";
@@ -69,7 +69,7 @@ inline void drawStandbyImage(const std::string& heroName, const std::string& bos
 }
 
 void drawAttackAnimation() {
-    std::cout << ">>> [HOAT ANH: Kị sĩ 25CTT4 vung kiếm chém Boss!] <<<\n";
+    std::cout << ">>> [HOAT ANH: Ki si Chem Boss!] <<<\n";
 }
 
 #endif // UI_HPP

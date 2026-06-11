@@ -4,6 +4,8 @@
 #include "Stack.hpp"
 #include <functional>
 
+#ifndef MY_SWAP_DEFINED
+#define MY_SWAP_DEFINED
 template <typename T>
 void mySwap(T &a, T &b)
 {
@@ -11,6 +13,7 @@ void mySwap(T &a, T &b)
     a = b;
     b = temp;
 }
+#endif
 
 template <typename T>
 struct HeapNode
