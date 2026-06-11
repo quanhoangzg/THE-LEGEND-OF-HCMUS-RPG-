@@ -114,12 +114,14 @@ int main() {
                 cout << "TN4\n";
                 break;
             case 5:
-                cout << "TN5\n";
-                /* code */
+                clearScreen();
+                viewCombatHistory();
+                pauseScreen();
                 break;
             case 6:
-                cout << "TN6\n";
-                /* code */
+                clearScreen();
+                viewLeaderboard();
+                pauseScreen();
                 break;
             case 0:
                 cout << "\nTam biet Ky si! Hen gap lai o HCMUS.\n";

@@ -7,6 +7,7 @@
 #include "../DataTypes.hpp"
 #include "SemesterSys.hpp" 
 #include "../UI.hpp"       
+#include "AchievementSys.hpp"
 
 // Hàm kiểm tra và level up cho kị sĩ
 void checkLevelUp(Player& hero) {
@@ -163,6 +164,10 @@ void enterDungeon(Player& hero) {
         currentDungeon.playerHP--;
     }
 
+    logCombatHistory(currentDungeon.courseID, targetBoss.name, score); 
+    // Cộng dồn điểm thực tế (Điểm ván đánh * Hệ số phần trăm)
+    currentDungeon.accumulatedScore += (score * targetBoss.weight);
+
     // Hủy boss ở Queue bất kể thắng thua
     dequeue(currentDungeon.bossQueue); 
 
@@ -180,6 +185,12 @@ void enterDungeon(Player& hero) {
     else if (isEmpty(currentDungeon.bossQueue)) {
         std::cout << "\n[CLEAR!] Chuc mung ban da quet sach quai vat, HOAN THANH mon [" << currentDungeon.courseID << "]!\n";
         hero.exp += 50; 
+        if (currentDungeon.accumulatedScore >= 5.0f) {
+            std::cout << "=> Tong diem tich luy (" << currentDungeon.accumulatedScore << ") dat chuan! Thu thap Thanh Tich thanh cong.\n";
+            saveAchievement(currentDungeon.courseID, currentDungeon.accumulatedScore);
+        } else {
+            std::cout << "=> Tong diem tich luy (" << currentDungeon.accumulatedScore << ") duoi 5.0. Khong the qua mon (Thieu diem)!\n";
+        }
     } 
     else {
         std::cout << "\n[Rut lui] Tran chien ket thuc. Ban rut lui an toan khoi [" << currentDungeon.courseID << "].\n";
