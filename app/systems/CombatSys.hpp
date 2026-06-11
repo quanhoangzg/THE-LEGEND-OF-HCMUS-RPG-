@@ -8,6 +8,26 @@
 #include "SemesterSys.hpp" 
 #include "../UI.hpp"       
 
+// Hàm kiểm tra và level up cho kị sĩ
+void checkLevelUp(Player& hero) {
+    int requireExp = hero.level * 50;
+    bool isLevelUp = false;
+
+    while (hero.exp >= requireExp) {
+        hero.exp -= requireExp;
+        hero.level++;
+        requireExp = hero.level * 50;
+        isLevelUp = true;
+    }
+
+    if (isLevelUp) {
+        std::cout << "\n==================================================\n";
+        std::cout << "  [LEVEL UP!] Ki si da dot pha canh gioi!  \n";
+        std::cout << " >>> CAP DO HIEN TAI: LVL " << hero.level << " <<<\n";
+        std::cout << "==================================================\n";
+    }
+}
+
 // Hàm cập nhật thông tin sau khi đánh boss
 void syncSemesterFile() {
     if (currentSemesterName.empty()) return;
@@ -166,6 +186,9 @@ void enterDungeon(Player& hero) {
         // Còn boss thì đẩy vào Piority Queue tiếp
         push(semesterPQ, currentDungeon);
     }
+
+    // Logic level up
+    checkLevelUp(hero);
 
     // ghi đè lại file xử lí
     syncSemesterFile();

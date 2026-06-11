@@ -26,7 +26,7 @@ void drawMainMenu(const Player& hero, const std::string& currentSemester) {
     std::string semStatus = currentSemester.empty() ? "Chua chon" : currentSemester;
     
     std::cout << "Ki si " << hero.name << " | LVL: " << hero.level 
-              << " | EXP: " << hero.exp << " | Hoc ky: " << semStatus << "\n";
+              << " | EXP: " << hero.exp << "/" << hero.level*50 << " | Hoc ky: " << semStatus << "\n";
     std::cout << "1. Cuon sach Dungeon Index (Tra cuu / Them mon)\n";
     std::cout << "2. Quan ly Hoc ky\n";
     std::cout << "3. Tien vao Dungeon (Giao tranh Boss)\n";

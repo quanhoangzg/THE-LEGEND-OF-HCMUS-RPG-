@@ -15,7 +15,7 @@ void pauseScreen() {
 }
 
 int main() {
-    Player hero = {"QuanTest", 10, 5};
+    Player hero = {"QuanTest", 1, 40};
 
     // Khởi động hệ thống file
     clearScreen();
