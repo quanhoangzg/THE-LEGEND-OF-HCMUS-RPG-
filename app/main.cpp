@@ -9,11 +9,6 @@
 #include "systems/PlayerSys.hpp"
 using namespace std;
 
-void pauseScreen() {
-    std::cout << "\n(Nhan Enter de tiep tuc...)";
-    std::cin.get(); 
-    clearScreen();
-}
 
 int main() {
     Player hero = {"", 1, 0};
@@ -110,18 +105,18 @@ int main() {
             case 3:
                 clearScreen();
                 enterDungeon(hero);
-                pauseScreen();
+                // pauseScreen();
                 break;
             case 4: // SỐ 4 MỚI: NHẬT KÝ
                 clearScreen();
                 viewCombatHistory();
-                pauseScreen();
+                // pauseScreen();
                 break;
                 
             case 5: // SỐ 5 MỚI: BẢNG VÀNG THÀNH TỰU
                 clearScreen();
                 viewLeaderboard();
-                pauseScreen();
+                // pauseScreen();
                 break;
             case 0:
                 cout << "\nTam biet Ky si! Hen gap lai o HCMUS.\n";

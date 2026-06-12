@@ -4,8 +4,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <iomanip>
+#include <sstream>
 #include "../DataTypes.hpp"        
 #include "../../lib/HashTable.hpp"
+#include "../UI.hpp"
 
 // ==== lOGIC CHO DUNGEON INDEX ====
 
@@ -35,7 +38,7 @@ void loadDungeonIndex() {
 
     std::ifstream file("app/data/courses.txt");
     if (!file.is_open()) {
-        std::cout << "[He thong] Khong tim thay file du lieu. Khoi tao Dungeon Index rong.\n";
+        std::cout << "  [He thong] Khong tim thay file du lieu. Khoi tao Dungeon Index rong.\n";
         return;
     }
 
@@ -54,24 +57,26 @@ void loadDungeonIndex() {
         insert(dungeonIndex, id, info, stringHasher);
     }
     file.close();
-    std::cout<< "[He thong] Da nap thanh cong Dungeon Index tu file!\n";
+    std::cout << "  [He thong] Da nap thanh cong Dungeon Index tu file!\n";
 }
 
 
 // Hàm thêm dungeon mới vào game
 void addDungeonToIndex() {
+    clearScreen();
+    drawHeader("THEM DUNGEON INDEX MOI");
+
     std::string id, tips;
     int credits;
 
-    std::cout << "=== THEM DUNGEON INDEX MOI ===\n";
-    std::cout << "Nhap ma mon hoc (VD: CSC10005): ";
+    std::cout << "  => Nhap ma mon hoc (VD: CSC10005): ";
     std::getline(std::cin, id);
 
-    std::cout << "Nhap so tin chi: ";
+    std::cout << "  => Nhap so tin chi: ";
     std::cin >> credits;
     std::cin.ignore();
 
-    std::cout << "Nhap meo pha dao dungeon nay: ";
+    std::cout << "  => Nhap meo pha dao dungeon nay: ";
     std::getline(std::cin, tips);
 
     CourseInfo newCourse = {id, credits, tips};
@@ -83,30 +88,40 @@ void addDungeonToIndex() {
     if (file.is_open()) {
         file << id << "\n" << credits << "\n" << tips << "\n";
         file.close();
-        std::cout << "\n [Thanh cong] da ghi du lieu dungeon Index thanh cong!\n";
+        std::cout << "\n  [Thanh cong] Da ghi du lieu dungeon Index thanh cong!\n";
     } else {
-        std::cout << "\n [Loi] Khong the ghi vao file du lieu!\n";
+        std::cout << "\n  [Loi] Khong the ghi vao file du lieu!\n";
     }
 }
 
 // Hàm tra cứu dungeon trả về thông tin của học phần đó
 void searchDungeonIndex() {
+    clearScreen();
+    drawHeader("TRA CUU DUNGEON INDEX");
+
     std::string queryID;
-    std::cout << "=== TRA CUU DUNGEON INDEX ===\n";
-    std::cout << "Nhap ma mon muon tra cuu (VD: CSC10004): ";
+    std::cout << "  => Nhap ma mon muon tra cuu (VD: CSC10004): ";
     std::getline(std::cin, queryID);
     auto resultNode = find(dungeonIndex, queryID, stringHasher);
 
+    std::cout << "\n";
     if (resultNode != nullptr) {
         CourseInfo foundCourse = resultNode->data.value;
-        std::cout << "\n-----------------------------------------\n";
-        std::cout << "  MA DUNGEON  : " << foundCourse.courseID << "\n";
-        std::cout << "  SO TIN CHI  : " << foundCourse.credits << "\n";
-        std::cout << "  MEO PHA DAO : " << foundCourse.tips << "\n";
-        std::cout << "-----------------------------------------\n";
+        std::cout << "  |" << std::setw(61) << std::left << ("   MA DUNGEON  : " + foundCourse.courseID) << "|\n";
+        std::cout << "  |" << std::setw(61) << std::left << ("   SO TIN CHI  : " + std::to_string(foundCourse.credits)) << "|\n";
+        
+        std::string tipFormat = "   MEO PHA DAO : " + foundCourse.tips;
+        if (tipFormat.length() > 61) {
+            std::cout << "  |" << std::setw(61) << std::left << tipFormat.substr(0, 61) << "|\n";
+            std::cout << "  |" << std::setw(61) << std::left << ("                 " + tipFormat.substr(61)) << "|\n";
+        } else {
+            std::cout << "  |" << std::setw(61) << std::left << tipFormat << "|\n";
+        }
+        drawDivider();
     } else {
-        std::cout << "\n[!] Vung dat nay chua duoc kham pha! Hay chon them index truoc.\n";
+        std::cout << "  |" << std::setw(61) << std::left << "   [!] Vung dat nay chua duoc kham pha! Hay them index truoc." << "|\n";
+        drawDivider();
     }
 }
 
-#endif 
+#endif

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <limits>
 #include "../DataTypes.hpp"
 #include "SemesterSys.hpp" 
 #include "../UI.hpp"       
@@ -23,10 +24,20 @@ void checkLevelUp(Player& hero) {
     }
 
     if (isLevelUp) {
-        std::cout << "\n==================================================\n";
-        std::cout << "  [LEVEL UP!] Ki si da dot pha canh gioi!  \n";
-        std::cout << " >>> CAP DO HIEN TAI: LVL " << hero.level << " <<<\n";
-        std::cout << "==================================================\n";
+        std::cout << "\n";
+        drawHeader("LEVEL UP! KI SI DA DOT PHA CANH GIOI!");
+        
+        std::string lvlTxt = ">>> CAP DO HIEN TAI: LVL " + std::to_string(hero.level) + " <<<";
+        int pad = (61 - lvlTxt.length()) / 2;
+        int ext = (61 - lvlTxt.length()) % 2;
+        
+        std::cout << "  |";
+        for(int i = 0; i < pad; i++) std::cout << " ";
+        std::cout << lvlTxt;
+        for(int i = 0; i < pad + ext; i++) std::cout << " ";
+        std::cout << "|\n";
+        
+        drawDivider();
     }
 }
 
@@ -68,7 +79,7 @@ void syncSemesterFile() {
 // Flow chiến các dungeons
 void enterDungeon(Player& hero) {
     if (currentSemesterName.empty() || isEmpty(semesterPQ)) {
-        std::cout << "[!] Vung dat yen binh. Khong co Dungeon nao dang mo trong hoc ky nay!\n";
+        std::cout << "\n  [!] Vung dat yen binh. Khong co Dungeon nao dang mo trong hoc ky nay!\n";
         return;
     }
 
@@ -84,32 +95,33 @@ void enterDungeon(Player& hero) {
     }
 
     // UI chọn Dungeon
-    std::cout << "=== BAN DO CHIEN TRUONG HOC KY: " << currentSemesterName << " ===\n";
-    std::cout << "(Danh sach sap xep theo Muc do uu tien ban thiet lap)\n\n";
+    clearScreen();
+    drawHeader("BAN DO CHIEN TRUONG HOC KY: " + currentSemesterName);
+    std::cout << "  (Danh sach sap xep theo Muc do uu tien ban thiet lap)\n\n";
     for (int i = 0; i < count; i++) {
-        std::cout << i + 1 << ". Vung dat: " << tempList[i].courseID 
+        std::cout << "  " << i + 1 << ". Vung dat: " << tempList[i].courseID 
                   << " | Do uu tien: " << tempList[i].priority 
                   << " | HP hien tai: " << tempList[i].playerHP << "\n";
         
         // In nhanh các con boss đang xếp hàng của môn đó
         QueueNode<Boss>* bNode = tempList[i].bossQueue.front;
-        std::cout << "   -> Quai vat con lai: ";
+        std::cout << "     -> Quai vat con lai: ";
         if (bNode == nullptr) std::cout << "Trong.";
         while (bNode != nullptr) {
             std::cout << "[" << bNode->data.name << "] ";
             bNode = bNode->next;
         }
-        std::cout << "\n--------------------------------------------------\n";
+        std::cout << "\n  ---------------------------------------------------------------\n";
     }
 
     int choice;
-    std::cout << "-> Nhap so thu tu Dungeon ban muon tien vao thach thuc: ";
+    std::cout << "\n => Nhap so thu tu Dungeon ban muon tien vao thach thuc: ";
     std::cin >> choice;
     std::cin.ignore();
 
     // Safe check
     if (choice < 1 || choice > count) {
-        std::cout << "[!] Lua chon sai lam! Ban bi lac duong, quay ve Menu chinh.\n";
+        std::cout << "  [!] Lua chon sai lam! Ban bi lac duong, quay ve Menu chinh.\n";
         // Trả lại vào Piority Queue
         for (int i = 0; i < count; i++) {
             push(semesterPQ, tempList[i]);
@@ -125,13 +137,13 @@ void enterDungeon(Player& hero) {
     clearScreen();
     Boss targetBoss = front(currentDungeon.bossQueue);
 
-    drawStandbyImage(hero.name, targetBoss.name);
+    drawStandbyImage(hero.name, targetBoss.name, currentDungeon.playerHP);
 
-    std::cout << "=== TIEN VAO DUNGEON: " << currentDungeon.courseID << " ===\n";
-    std::cout << "[!] Quai vat [" << targetBoss.name << "] (Sat thuong/He so: " << targetBoss.weight * 100 << "%) lao ra chan duong!\n";
+    drawHeader("TIEN VAO DUNGEON: " + currentDungeon.courseID);
+    std::cout << "  [!] Quai vat [" << targetBoss.name << "] (Sat thuong/He so: " << targetBoss.weight * 100 << "%) lao ra chan duong!\n";
 
     float score;
-    std::cout << "\n>>> Nhap diem so tran chien cua ban (0 - 10): ";
+    std::cout << "\n => Nhap diem so tran chien cua ban (0 - 10): ";
 
     if (!(std::cin >> score) || score < 0 || score > 10) { // check safe nếu ko phải chữ và không nằm trong khoảng từ 0 - 10
         std::cin.clear();
@@ -142,7 +154,7 @@ void enterDungeon(Player& hero) {
     }
 
     if (score == -1) {
-        std::cout << "\n[Rut lui] Ki si chu dong thu kiem, quay xe ve thanh tri an toan!\n";
+        std::cout << "\n  [Rut lui] Ki si chu dong thu kiem, quay xe ve thanh tri an toan!\n";
                 for (int i = 0; i < count; i++) {
             if (i == chosenIndex) {
                 push(semesterPQ, currentDungeon); // Nhét lại môn hiện tại (Boss vẫn còn nguyên)
@@ -156,12 +168,12 @@ void enterDungeon(Player& hero) {
     drawAttackAnimation();
 
     if (score >= 5.0f) {
-        std::cout << "\n>>> [WIN ANIMATION: CHIEN THANG AP DAO!] <<<\n";
-        std::cout << "Ban da vuot qua bai kiem tra " << targetBoss.name << " voi diem so " << score << "!\n";
+        std::cout << "\n  >>> [WIN ANIMATION: CHIEN THANG AP DAO!] <<<\n";
+        std::cout << "  Ban da vuot qua bai kiem tra " << targetBoss.name << " voi diem so " << score << "!\n";
         hero.exp += 10; 
     } else {
-        std::cout << "\n>>> [LOSE ANIMATION: BAN BI TRUNG DON!] <<<\n";
-        std::cout << "Diem so " << score << " khong dat! Ban mat 1 HP trong vung dat nay!\n";
+        std::cout << "\n  >>> [LOSE ANIMATION: BAN BI TRUNG DON!] <<<\n";
+        std::cout << "  Diem so " << score << " khong dat! Ban mat 1 HP trong vung dat nay!\n";
         currentDungeon.playerHP--;
     }
 
@@ -180,21 +192,21 @@ void enterDungeon(Player& hero) {
 
     // Đối với môn được chọn thì quyết định logicđậu hhay rớt
     if (currentDungeon.playerHP <= 0) {
-        std::cout << "\n[GAME OVER] Kị si da kiet suc tai Dungeon [" << currentDungeon.courseID << "].\n";
-        std::cout << "Ban da rot mon! Dungeon nay dong cua vinh vien vao ky nay.\n";
+        std::cout << "\n  [GAME OVER] Ki si da kiet suc tai Dungeon [" << currentDungeon.courseID << "].\n";
+        std::cout << "  Ban da rot mon! Dungeon nay dong cua vinh vien vao ky nay.\n";
     } 
     else if (isEmpty(currentDungeon.bossQueue)) {
-        std::cout << "\n[CLEAR!] Chuc mung ban da quet sach quai vat, HOAN THANH mon [" << currentDungeon.courseID << "]!\n";
+        std::cout << "\n  [CLEAR!] Chuc mung ban da quet sach quai vat, HOAN THANH mon [" << currentDungeon.courseID << "]!\n";
         hero.exp += 50; 
         if (currentDungeon.accumulatedScore >= 5.0f) {
-            std::cout << "=> Tong diem tich luy (" << currentDungeon.accumulatedScore << ") dat chuan! Thu thap Thanh Tich thanh cong.\n";
+            std::cout << "  => Tong diem tich luy (" << currentDungeon.accumulatedScore << ") dat chuan! Thu thap Thanh Tich thanh cong.\n";
             saveAchievement(currentDungeon.courseID, currentDungeon.accumulatedScore);
         } else {
-            std::cout << "=> Tong diem tich luy (" << currentDungeon.accumulatedScore << ") duoi 5.0. Khong the qua mon (Thieu diem)!\n";
+            std::cout << "  => Tong diem tich luy (" << currentDungeon.accumulatedScore << ") duoi 5.0. Khong the qua mon (Thieu diem)!\n";
         }
     } 
     else {
-        std::cout << "\n[Rut lui] Tran chien ket thuc. Ban rut lui an toan khoi [" << currentDungeon.courseID << "].\n";
+        std::cout << "\n  [Rut lui] Tran chien ket thuc. Ban rut lui an toan khoi [" << currentDungeon.courseID << "].\n";
         // Còn boss thì đẩy vào Piority Queue tiếp
         push(semesterPQ, currentDungeon);
     }
@@ -209,4 +221,4 @@ void enterDungeon(Player& hero) {
     syncSemesterFile();
 }
 
-#endif 
+#endif

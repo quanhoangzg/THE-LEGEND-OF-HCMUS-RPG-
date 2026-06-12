@@ -5,7 +5,10 @@
 #include <string>
 #include <fstream>
 #include <filesystem>
+#include <iomanip>
+#include <sstream>
 #include "../DataTypes.hpp"
+#include "../UI.hpp"
 #include "../../lib/LinkedList.hpp" 
 #include "../../lib/AVL.hpp"        
 #include "../../lib/Algorithms.hpp" 
@@ -13,8 +16,7 @@
 inline SinglyLinkedList<LogEntry> combatHistory = {nullptr, nullptr, 0}; 
 inline AVLTree<Relic> achievementTree = {nullptr};
 
-
-void loadRecords() { // Nạp dữ liệu từ file khi mở game
+void loadRecords() { 
     std::filesystem::create_directories("app/data/records");
 
     std::ifstream hFile("app/data/records/history.txt");
@@ -51,28 +53,34 @@ void logCombatHistory(const std::string& courseID, const std::string& bossName, 
         file << courseID << " " << bossName << " " << score << "\n";
         file.close();
     } else {
-        std::cout << "[Loi] Khong the ghi file history.txt!\n"; // Thêm log để bắt lỗi nếu có
+        std::cout << "[Loi] Khong the ghi file history.txt!\n"; 
     }
 }
 
 void viewCombatHistory() {
-    std::cout << "=== NHAT KY MAO HIEM (Lich su gan nhat hien len dau) ===\n";
+    clearScreen();
+    drawHeader("NHAT KY MAO HIEM (Lich su)");
+    
     if (isEmpty(combatHistory)) {
-        std::cout << "[!] Ki si chua tung tham gia tran chien nao.\n";
+        std::cout << "  |" << std::setw(61) << std::left << "   [!] Ki si chua tung tham gia tran chien nao." << "|\n";
+        drawDivider();
         return;
     }
 
     SLLNode<LogEntry>* current = combatHistory.head; 
     int count = 1;
     while (current != nullptr) {
-        std::cout << count++ << ". Vung dat: [" << current->data.courseID 
-                  << "] | Doi dau: [" << current->data.bossName 
-                  << "] | Diem so: " << current->data.score << "\n";
+        std::ostringstream oss;
+        oss << "   " << count++ << ". Vung dat: [" << current->data.courseID 
+            << "] | Doi dau: [" << current->data.bossName 
+            << "] | Diem: " << current->data.score;
+            
+        std::cout << "  |" << std::setw(61) << std::left << oss.str() << "|\n";
         current = current->next;
     }
+    drawDivider();
 }
 
-// Lưu Achievement 
 void saveAchievement(const std::string& courseID, float totalScore) {
     Relic r = {courseID, totalScore};
     insert(achievementTree, r); 
@@ -95,8 +103,6 @@ void extractAVLToArray(AVLNode<Relic>* node, Relic arr[], int& index) {
     extractAVLToArray(node->right, arr, index);
 }
 
-
-// Bảng vàng vương miện (quicksort)
 struct CompareRelicDescending {
     bool operator()(const Relic& a, const Relic& b) const {
         return a.totalScore > b.totalScore; 
@@ -104,29 +110,34 @@ struct CompareRelicDescending {
 };
 
 void viewLeaderboard() {
-    std::cout << "=== BANG VANG THANH TUU (LEADERBOARD) ===\n";
+    clearScreen();
+    drawHeader("BANG VANG THANH TUU (LEADERBOARD)");
     
     Relic arr[100]; 
     int count = 0;
     
-    // Rút dữ liệu từ Cây AVL ra mảng
     extractAVLToArray(achievementTree.root, arr, count);
     
     if (count == 0) {
-        std::cout << "[!] Chua co mon hoc nao duoc pha dao trong lich su!\n";
+        std::cout << "  |" << std::setw(61) << std::left << "   [!] Chua co mon hoc nao duoc pha dao trong lich su!" << "|\n";
+        drawDivider();
         return;
     }
 
     quickSort(arr, count, CompareRelicDescending());
 
     for (int i = 0; i < count; i++) {
+        std::ostringstream oss;
         if (i == 0) {
-            std::cout << " [W] (Vuong mien) "; 
+            oss << "   [W] (Vuong mien) "; 
         } else {
-            std::cout << " [V] (Hoan thanh) ";
+            oss << "   [V] (Hoan thanh) ";
         }
-        std::cout << arr[i].courseID << " | Tong diem (GPA): " << arr[i].totalScore << "\n";
+        oss << arr[i].courseID << " | Tong diem (GPA): " << arr[i].totalScore;
+        
+        std::cout << "  |" << std::setw(61) << std::left << oss.str() << "|\n";
     }
+    drawDivider();
 }
 
-#endif 
+#endif
