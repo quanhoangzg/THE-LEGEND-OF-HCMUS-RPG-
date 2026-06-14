@@ -45,7 +45,7 @@ void loadOrCreatePlayer(Player& hero) {
         std::cout << "==================================================\n";
         std::cout << "       KHOI TAO DIEN MAO - KHAC TEN KI SI         \n";
         std::cout << "==================================================\n";
-        std::cout << "Chao mung ban den với mien dat THE LEGEND OF HCMUS!\n";
+        std::cout << "Chao mung ban den voi mien dat THE LEGEND OF HCMUS!\n";
         std::cout << "Truoc khi nhan kiem vao vung dat du, hay ghi ten minh vao Bang phong than.\n\n";
         std::cout << "-> Nhap ten Ki si cua ban: ";
         std::getline(std::cin, hero.name);
